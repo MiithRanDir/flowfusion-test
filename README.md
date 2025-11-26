@@ -23,7 +23,8 @@ The project follows Clean Architecture with the following layers:
 - **Usecase (`internal/usecase`)**: Business logic (Auth logic).
 - **Repository (`internal/repository`)**: Data access layer (GORM implementation).
 - **Delivery (`internal/delivery/http`)**: HTTP handlers and routes (Fiber).
-- **Infrastructure (`internal/infrastructure`)**: External adapters (DB, Redis, JWT, Password hashing).
+- **Infrastructure (`internal/infrastructure`)**: External adapters (DB, Redis).
+- **Service (`internal/service`)**: Business logic (Password hashing,JWT).
 
 ## Prerequisites
 
