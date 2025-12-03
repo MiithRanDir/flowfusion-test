@@ -96,7 +96,10 @@ func (h *AuthHandler) Logout(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
 	}
 
-	accessToken := c.Locals("accessToken").(string)
+	accessToken, ok := c.Locals("accessToken").(string)
+	if !ok {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Access token not found in context"})
+	}
 
 	if err := h.authUsecase.Logout(c.Context(), accessToken, req.RefreshToken); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Logout failed"})
@@ -106,7 +109,10 @@ func (h *AuthHandler) Logout(c *fiber.Ctx) error {
 }
 
 func (h *AuthHandler) GetMe(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(uint)
+	userID, ok := c.Locals("userID").(uint)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "User ID not found in context"})
+	}
 
 	user, err := h.authUsecase.GetMe(c.Context(), userID)
 	if err != nil {
